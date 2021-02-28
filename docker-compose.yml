@@ -1,0 +1,43 @@
+version: '3.2'
+services: 
+    speedtest-influxdb:
+        image: 'influxdb:1.8'
+        container_name: 'speedtest-influxdb'
+        ports:
+            - 8086:8086
+        networks: 
+          - influxdb-network
+        environment: 
+          DOCKER_INFLUXDB_INIT_USERNAME: "admin"
+          DOCKER_INFLUXDB_INIT_PASSWORD: "admin"
+          DOCKER_INFLUXDB_INIT_ORG: "speedtest_telegraf"
+          DOCKER_INFLUXDB_INIT_BUCKETS: "Speedtest"
+          DOCKER_INFLUXDB_INIT_MODE: setup
+        volumes: 
+          - './speedtest/conf/influxdb.conf:/etc/influxdb/influxdb.conf'
+
+    speedtest-telegraf:
+        image: 'telegraf'
+        container_name: 'speedtest-telegraf'
+        volumes: 
+            - type: bind
+              source: ./speedtest/conf/telegraf.conf
+              target: /etc/telegraf/telegraf.conf
+              read_only: false
+            - type: bind
+              source: ./speedtest/bin
+              target: /speedtest
+        # depends_on: 
+        #     - speedtest-influxdb
+        networks: 
+          - influxdb-network
+    speedtest-grafana:
+        image: 'grafana/grafana'
+        container_name: 'speedtest-grafana'
+        ports:
+          - 3000:3000
+        networks: 
+          - influxdb-network
+networks: 
+  influxdb-network:
+
