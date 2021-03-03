@@ -15,6 +15,7 @@ services:
           DOCKER_INFLUXDB_INIT_MODE: setup
         volumes: 
           - './speedtest/conf/influxdb.conf:/etc/influxdb/influxdb.conf'
+          - './db/influxdb:/var/lib/influxdb'
 
     speedtest-telegraf:
         image: 'telegraf'
@@ -27,8 +28,6 @@ services:
             - type: bind
               source: ./speedtest/bin
               target: /speedtest
-        # depends_on: 
-        #     - speedtest-influxdb
         networks: 
           - influxdb-network
     speedtest-grafana:
