@@ -34,6 +34,8 @@ services:
         user: root
         ports:
           - 3000:3000
+        environment: 
+          GF_SERVER_DOMAIN: "${GF_SERVER_DOMAIN:localhost}"
         volumes: 
             - ./db/grafana:/var/lib/grafana
         networks: 

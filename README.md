@@ -34,4 +34,7 @@ I used this [dashboard](https://grafana.com/grafana/dashboards/12428) of [Derek-
 - Menu > Dashboard > Manage > Import
 - Import via granafa.com: `12428` 
 
+## Environment Variable
+ - GF_SERVER_DOMAIN: This environment tells to grafana which is the server domain, when the alerts runs on your notification channel, this will send `URL: SERVER_DOMAIN` in the notification's body.
+
 Thanks to [Derek-K](https://github.com/Derek-K/telegraf-speedtest)
