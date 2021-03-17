@@ -35,9 +35,20 @@ services:
         ports:
           - 3000:3000
         environment: 
-          GF_SERVER_DOMAIN: "${GF_SERVER_DOMAIN:localhost}"
+          GF_SERVER_DOMAIN: ${GF_SERVER_DOMAIN:-localhost}
+          GF_RENDERING_SERVER_URL: http://speedtest-grafana-renderer:8081/render
+          GF_RENDERING_CALLBACK_URL: http://speedtest-grafana:3000/
+          GF_LOG_FILTERS: rendering:debug
         volumes: 
             - ./db/grafana:/var/lib/grafana
+        networks: 
+          - influxdb-network
+          
+    speedtest-grafana-renderer:
+        image: 'grafana/grafana-image-renderer'
+        container_name: 'speedtest-grafana-renderer'
+        ports:
+          - "8081:8081"
         networks: 
           - influxdb-network
 networks: 
